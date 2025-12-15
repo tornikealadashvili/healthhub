@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Unit Test Suite" parallel="false" verbose="2">
+    
+    <listeners>
+        <listener class-name="org.healthhub.listeners.TestListener"/>
+    </listeners>
+    
+    <test name="Patient Unit Tests">
+        <classes>
+            <class name="org.healthhub.tests.PatientTest"/>
+        </classes>
+    </test>
+    
+    <test name="Doctor Unit Tests">
+        <classes>
+            <class name="org.healthhub.tests.DoctorTest"/>
+        </classes>
+    </test>
+    
+    <test name="Prescription Unit Tests">
+        <classes>
+            <class name="org.healthhub.tests.PrescriptionTest"/>
+        </classes>
+    </test>
+    
+</suite>
+
+

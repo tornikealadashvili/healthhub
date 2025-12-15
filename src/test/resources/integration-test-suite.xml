@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Integration Test Suite" parallel="false" verbose="2">
+    
+    <listeners>
+        <listener class-name="org.healthhub.listeners.TestListener"/>
+    </listeners>
+    
+    <test name="Appointment Integration Tests">
+        <classes>
+            <class name="org.healthhub.tests.AppointmentTest"/>
+        </classes>
+    </test>
+    
+    <test name="Medical Record Integration Tests">
+        <classes>
+            <class name="org.healthhub.tests.MedicalRecordTest"/>
+        </classes>
+    </test>
+    
+</suite>
+
+
