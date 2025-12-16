@@ -16,7 +16,6 @@ public class DoctorTest {
     
     private Doctor doctor;
     private String testDoctorId;
-    private SoftAssert softAssert;
     
     @BeforeSuite
     public void beforeSuite() {
@@ -69,21 +68,18 @@ public class DoctorTest {
         doctor.setFirstName("Dr. Sarah");
         doctor.setLastName("Johnson");
         doctor.setSpecialization("Cardiology");
-        softAssert = new SoftAssert();
         System.out.println("DoctorTest - BeforeMethod executed. Method counter: " + methodCounter);
     }
     
     @AfterMethod
     public void afterMethod() {
-        if (softAssert != null) {
-            softAssert.assertAll();
-        }
         doctor = null;
         System.out.println("DoctorTest - AfterMethod executed");
     }
     
     @Test(groups = "validation", priority = 1)
     public void testDoctorCreation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(doctor, "Doctor should not be null");
         softAssert.assertEquals(doctor.getDoctorId(), testDoctorId, "Doctor ID should match");
         softAssert.assertEquals(doctor.getFirstName(), "Dr. Sarah", "First name should match");
@@ -94,6 +90,7 @@ public class DoctorTest {
     
     @Test(groups = "validation", priority = 2)
     public void testLicenseNumberValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Doctor.DoctorValidator.isValidLicenseNumber("AB123456"), "Valid license should pass");
         softAssert.assertTrue(Doctor.DoctorValidator.isValidLicenseNumber("XY987654"), "Another valid license should pass");
         softAssert.assertFalse(Doctor.DoctorValidator.isValidLicenseNumber("12345678"), "Numeric only should fail");
@@ -104,6 +101,7 @@ public class DoctorTest {
     
     @Test(groups = "validation", priority = 3)
     public void testSpecializationValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Doctor.DoctorValidator.isValidSpecialization("Cardiology"), "Cardiology should be valid");
         softAssert.assertTrue(Doctor.DoctorValidator.isValidSpecialization("Neurology"), "Neurology should be valid");
         softAssert.assertFalse(Doctor.DoctorValidator.isValidSpecialization(""), "Empty specialization should fail");
@@ -113,6 +111,7 @@ public class DoctorTest {
     
     @Test(groups = "specialization", priority = 4)
     public void testSpecializationEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(Doctor.Specialization.CARDIOLOGY.getDisplayName(), "Cardiology", "Cardiology display name should match");
         softAssert.assertEquals(Doctor.Specialization.NEUROLOGY.getDisplayName(), "Neurology", "Neurology display name should match");
         softAssert.assertEquals(Doctor.Specialization.PEDIATRICS.getDisplayName(), "Pediatrics", "Pediatrics display name should match");
@@ -123,6 +122,7 @@ public class DoctorTest {
     
     @Test(groups = "specialization", priority = 5)
     public void testAllSpecializations() {
+        SoftAssert softAssert = new SoftAssert();
         Doctor.Specialization[] specializations = Doctor.Specialization.values();
         softAssert.assertTrue(specializations.length > 0, "Should have at least one specialization");
         for (Doctor.Specialization spec : specializations) {
@@ -134,6 +134,7 @@ public class DoctorTest {
     
     @Test(priority = 6)
     public void testAddPatient() {
+        SoftAssert softAssert = new SoftAssert();
         Patient patient = new Patient("PAT-001", "John", "Doe", LocalDate.of(1990, 5, 15));
         doctor.addPatient(patient);
         
@@ -144,6 +145,7 @@ public class DoctorTest {
     
     @Test(priority = 7)
     public void testAddDuplicatePatient() {
+        SoftAssert softAssert = new SoftAssert();
         Patient patient = new Patient("PAT-001", "John", "Doe", LocalDate.of(1990, 5, 15));
         doctor.addPatient(patient);
         doctor.addPatient(patient);
@@ -154,6 +156,7 @@ public class DoctorTest {
     
     @Test(priority = 8)
     public void testRemovePatient() {
+        SoftAssert softAssert = new SoftAssert();
         Patient patient = new Patient("PAT-001", "John", "Doe", LocalDate.of(1990, 5, 15));
         doctor.addPatient(patient);
         doctor.removePatient(patient);
@@ -165,6 +168,7 @@ public class DoctorTest {
     
     @Test(priority = 9)
     public void testSetLicenseNumber() {
+        SoftAssert softAssert = new SoftAssert();
         doctor.setLicenseNumber("AB123456");
         softAssert.assertEquals(doctor.getLicenseNumber(), "AB123456", "License number should be set correctly");
         softAssert.assertAll();
@@ -172,6 +176,7 @@ public class DoctorTest {
     
     @Test(priority = 10)
     public void testMultiplePatients() {
+        SoftAssert softAssert = new SoftAssert();
         Patient patient1 = new Patient("PAT-001", "John", "Doe", LocalDate.of(1990, 5, 15));
         Patient patient2 = new Patient("PAT-002", "Jane", "Smith", LocalDate.of(1985, 3, 20));
         

@@ -19,7 +19,6 @@ public class MedicalRecordTest {
     private Patient patient;
     private Doctor doctor;
     private MedicalRecord medicalRecord;
-    private SoftAssert softAssert;
     
     @BeforeSuite
     public void beforeSuite() {
@@ -79,15 +78,11 @@ public class MedicalRecordTest {
         medicalRecord.setDoctor(doctor);
         medicalRecord.setRecordDate(LocalDateTime.now());
         medicalRecord.setStatus(MedicalRecord.RecordStatus.ACTIVE);
-        softAssert = new SoftAssert();
         System.out.println("MedicalRecordTest - BeforeMethod executed. Method counter: " + methodCounter);
     }
     
     @AfterMethod
     public void afterMethod() {
-        if (softAssert != null) {
-            softAssert.assertAll();
-        }
         medicalRecord = null;
         patient = null;
         doctor = null;
@@ -96,6 +91,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "types", priority = 1)
     public void testMedicalRecordCreation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(medicalRecord, "Medical record should not be null");
         softAssert.assertEquals(medicalRecord.getRecordId(), "REC-001", "Record ID should match");
         softAssert.assertEquals(medicalRecord.getPatient(), patient, "Patient should match");
@@ -106,6 +102,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "types", priority = 2)
     public void testRecordTypeEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(MedicalRecord.RecordType.CONSULTATION.getDisplayName(), "Consultation", "Consultation display name should match");
         softAssert.assertEquals(MedicalRecord.RecordType.LAB_RESULT.getDisplayName(), "Lab Result", "Lab Result display name should match");
         softAssert.assertEquals(MedicalRecord.RecordType.EMERGENCY.getDisplayName(), "Emergency", "Emergency display name should match");
@@ -115,6 +112,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "types", priority = 3)
     public void testRecordStatusEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(MedicalRecord.RecordStatus.ACTIVE.getDisplayName(), "Active", "Active display name should match");
         softAssert.assertEquals(MedicalRecord.RecordStatus.ARCHIVED.getDisplayName(), "Archived", "Archived display name should match");
         softAssert.assertEquals(MedicalRecord.RecordStatus.DELETED.getDisplayName(), "Deleted", "Deleted display name should match");
@@ -124,6 +122,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "types", priority = 4)
     public void testSetRecordType() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.setType(MedicalRecord.RecordType.CONSULTATION);
         softAssert.assertEquals(medicalRecord.getType(), MedicalRecord.RecordType.CONSULTATION, "Type should be CONSULTATION");
         
@@ -134,6 +133,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "types", priority = 5)
     public void testArchiveRecord() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.archive();
         softAssert.assertEquals(medicalRecord.getStatus(), MedicalRecord.RecordStatus.ARCHIVED, "Status should be ARCHIVED");
         softAssert.assertAll();
@@ -141,6 +141,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "manager", priority = 6)
     public void testAddRecordToManager() {
+        SoftAssert softAssert = new SoftAssert();
         MedicalRecord.MedicalRecordManager.addRecord(medicalRecord);
         softAssert.assertEquals(MedicalRecord.MedicalRecordManager.getTotalRecordCount(), 1, "Should have one record");
         softAssert.assertAll();
@@ -148,6 +149,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "manager", priority = 7)
     public void testGetRecordsForPatient() {
+        SoftAssert softAssert = new SoftAssert();
         MedicalRecord.MedicalRecordManager.addRecord(medicalRecord);
         Patient patient2 = new Patient("PAT-002", "Jane", "Smith", LocalDate.of(1985, 3, 20));
         MedicalRecord record2 = new MedicalRecord();
@@ -165,6 +167,7 @@ public class MedicalRecordTest {
     
     @Test(groups = "manager", priority = 8)
     public void testGetRecordsByType() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.setType(MedicalRecord.RecordType.CONSULTATION);
         MedicalRecord.MedicalRecordManager.addRecord(medicalRecord);
         
@@ -184,6 +187,7 @@ public class MedicalRecordTest {
     
     @Test(priority = 9)
     public void testSetDiagnosis() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.setDiagnosis("Hypertension");
         softAssert.assertEquals(medicalRecord.getDiagnosis(), "Hypertension", "Diagnosis should be set correctly");
         softAssert.assertAll();
@@ -191,6 +195,7 @@ public class MedicalRecordTest {
     
     @Test(priority = 10)
     public void testSetSymptoms() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.setSymptoms("Headache, dizziness");
         softAssert.assertEquals(medicalRecord.getSymptoms(), "Headache, dizziness", "Symptoms should be set correctly");
         softAssert.assertAll();
@@ -198,6 +203,7 @@ public class MedicalRecordTest {
     
     @Test(priority = 11)
     public void testAddTestResult() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.addTestResult("Blood pressure: 140/90");
         medicalRecord.addTestResult("Heart rate: 72 bpm");
         
@@ -209,6 +215,7 @@ public class MedicalRecordTest {
     
     @Test(priority = 12)
     public void testSetTreatment() {
+        SoftAssert softAssert = new SoftAssert();
         medicalRecord.setTreatment("Prescribed medication and lifestyle changes");
         softAssert.assertEquals(medicalRecord.getTreatment(), "Prescribed medication and lifestyle changes", "Treatment should be set correctly");
         softAssert.assertAll();

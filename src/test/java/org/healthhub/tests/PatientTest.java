@@ -17,7 +17,6 @@ public class PatientTest {
     
     private Patient patient;
     private String testPatientId;
-    private SoftAssert softAssert;
     
     @BeforeSuite
     public void beforeSuite() {
@@ -67,21 +66,18 @@ public class PatientTest {
         methodCounter++;
         testPatientId = "PAT-" + System.currentTimeMillis();
         patient = new Patient(testPatientId, "John", "Doe", LocalDate.of(1990, 5, 15));
-        softAssert = new SoftAssert();
         System.out.println("PatientTest - BeforeMethod executed. Method counter: " + methodCounter);
     }
     
     @AfterMethod
     public void afterMethod() {
-        if (softAssert != null) {
-            softAssert.assertAll();
-        }
         patient = null;
         System.out.println("PatientTest - AfterMethod executed");
     }
     
     @Test(groups = "validation", priority = 1)
     public void testPatientCreation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(patient, "Patient should not be null");
         softAssert.assertEquals(patient.getPatientId(), testPatientId, "Patient ID should match");
         softAssert.assertEquals(patient.getFirstName(), "John", "First name should be John");
@@ -92,6 +88,7 @@ public class PatientTest {
     
     @Test(groups = "validation", priority = 2)
     public void testPatientAgeCalculation() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDate birthDate = LocalDate.now().minusYears(30);
         Patient testPatient = new Patient("PAT-001", "Test", "User", birthDate);
         softAssert.assertEquals(testPatient.getAge(), 30, "Age should be 30");
@@ -100,6 +97,7 @@ public class PatientTest {
     
     @Test(groups = "validation", priority = 3)
     public void testEmailValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Patient.PatientValidator.isValidEmail("john.doe@example.com"), "Valid email should pass");
         softAssert.assertFalse(Patient.PatientValidator.isValidEmail("invalid-email"), "Invalid email should fail");
         softAssert.assertFalse(Patient.PatientValidator.isValidEmail(null), "Null email should fail");
@@ -108,6 +106,7 @@ public class PatientTest {
     
     @Test(groups = "validation", priority = 4)
     public void testPhoneNumberValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Patient.PatientValidator.isValidPhoneNumber("1234567890"), "10 digit phone should be valid");
         softAssert.assertTrue(Patient.PatientValidator.isValidPhoneNumber("123456789012345"), "15 digit phone should be valid");
         softAssert.assertFalse(Patient.PatientValidator.isValidPhoneNumber("123"), "Short phone should be invalid");
@@ -117,6 +116,7 @@ public class PatientTest {
     
     @Test(groups = "validation", priority = 5)
     public void testPatientIdValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Patient.PatientValidator.isValidPatientId("PAT-001"), "Valid patient ID should pass");
         softAssert.assertFalse(Patient.PatientValidator.isValidPatientId(""), "Empty patient ID should fail");
         softAssert.assertFalse(Patient.PatientValidator.isValidPatientId(null), "Null patient ID should fail");
@@ -125,6 +125,7 @@ public class PatientTest {
     
     @Test(groups = "builder", priority = 6)
     public void testPatientBuilder() {
+        SoftAssert softAssert = new SoftAssert();
         Patient builtPatient = new Patient.PatientBuilder()
                 .setPatientId("PAT-002")
                 .setFirstName("Jane")
@@ -142,6 +143,7 @@ public class PatientTest {
     
     @Test(priority = 7)
     public void testAddMedicalRecord() {
+        SoftAssert softAssert = new SoftAssert();
         MedicalRecord record = new MedicalRecord();
         record.setRecordId("REC-001");
         record.setPatient(patient);
@@ -157,6 +159,7 @@ public class PatientTest {
     
     @Test(priority = 8)
     public void testSetEmail() {
+        SoftAssert softAssert = new SoftAssert();
         patient.setEmail("john.doe@example.com");
         softAssert.assertEquals(patient.getEmail(), "john.doe@example.com", "Email should be set correctly");
         softAssert.assertAll();
@@ -164,6 +167,7 @@ public class PatientTest {
     
     @Test(priority = 9)
     public void testSetPhoneNumber() {
+        SoftAssert softAssert = new SoftAssert();
         patient.setPhoneNumber("5551234567");
         softAssert.assertEquals(patient.getPhoneNumber(), "5551234567", "Phone number should be set correctly");
         softAssert.assertAll();
@@ -171,6 +175,7 @@ public class PatientTest {
     
     @Test(priority = 10)
     public void testMultipleMedicalRecords() {
+        SoftAssert softAssert = new SoftAssert();
         MedicalRecord record1 = new MedicalRecord();
         record1.setRecordId("REC-001");
         record1.setPatient(patient);

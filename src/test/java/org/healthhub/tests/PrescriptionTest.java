@@ -18,7 +18,6 @@ public class PrescriptionTest {
     private Patient patient;
     private Doctor doctor;
     private Prescription prescription;
-    private SoftAssert softAssert;
     
     @BeforeSuite
     public void beforeSuite() {
@@ -78,15 +77,11 @@ public class PrescriptionTest {
         prescription.setIssueDate(LocalDate.now());
         prescription.setExpiryDate(LocalDate.now().plusDays(30));
         prescription.setStatus(Prescription.PrescriptionStatus.ACTIVE);
-        softAssert = new SoftAssert();
         System.out.println("PrescriptionTest - BeforeMethod executed. Method counter: " + methodCounter);
     }
     
     @AfterMethod
     public void afterMethod() {
-        if (softAssert != null) {
-            softAssert.assertAll();
-        }
         prescription = null;
         patient = null;
         doctor = null;
@@ -95,6 +90,7 @@ public class PrescriptionTest {
     
     @Test(groups = "validation", priority = 1)
     public void testPrescriptionCreation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(prescription, "Prescription should not be null");
         softAssert.assertEquals(prescription.getPrescriptionId(), "RX-001", "Prescription ID should match");
         softAssert.assertEquals(prescription.getPatient(), patient, "Patient should match");
@@ -105,6 +101,7 @@ public class PrescriptionTest {
     
     @Test(groups = "validation", priority = 2)
     public void testPrescriptionIdValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(Prescription.PrescriptionValidator.isValidPrescriptionId("RX-001"), "Valid prescription ID should pass");
         softAssert.assertTrue(Prescription.PrescriptionValidator.isValidPrescriptionId("RX-ABC123"), "Another valid prescription ID should pass");
         softAssert.assertFalse(Prescription.PrescriptionValidator.isValidPrescriptionId("001"), "Invalid prescription ID should fail");
@@ -114,6 +111,7 @@ public class PrescriptionTest {
     
     @Test(groups = "validation", priority = 3)
     public void testHasMedicationsValidation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertFalse(Prescription.PrescriptionValidator.hasMedications(prescription), "Empty prescription should have no medications");
         
         Prescription.Medication medication = new Prescription.Medication();
@@ -129,6 +127,7 @@ public class PrescriptionTest {
     
     @Test(groups = "validation", priority = 4)
     public void testExpiryDateValidation() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDate futureDate = LocalDate.now().plusDays(30);
         softAssert.assertTrue(Prescription.PrescriptionValidator.isValidExpiryDate(futureDate), "Future date should be valid");
         
@@ -139,6 +138,7 @@ public class PrescriptionTest {
     
     @Test(groups = "validation", priority = 5)
     public void testPrescriptionStatusEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(Prescription.PrescriptionStatus.ACTIVE.getDisplayName(), "Active", "Active display name should match");
         softAssert.assertEquals(Prescription.PrescriptionStatus.EXPIRED.getDisplayName(), "Expired", "Expired display name should match");
         softAssert.assertEquals(Prescription.PrescriptionStatus.CANCELLED.getDisplayName(), "Cancelled", "Cancelled display name should match");
@@ -148,6 +148,7 @@ public class PrescriptionTest {
     
     @Test(groups = "medication", priority = 6)
     public void testAddMedication() {
+        SoftAssert softAssert = new SoftAssert();
         Prescription.Medication medication = new Prescription.Medication();
         medication.setName("Aspirin");
         medication.setDosage("100mg");
@@ -162,6 +163,7 @@ public class PrescriptionTest {
     
     @Test(groups = "medication", priority = 7)
     public void testMedicationProperties() {
+        SoftAssert softAssert = new SoftAssert();
         Prescription.Medication medication = new Prescription.Medication();
         medication.setName("Ibuprofen");
         medication.setDosage("200mg");
@@ -177,6 +179,7 @@ public class PrescriptionTest {
     
     @Test(groups = "medication", priority = 8)
     public void testMultipleMedications() {
+        SoftAssert softAssert = new SoftAssert();
         Prescription.Medication med1 = new Prescription.Medication();
         med1.setName("Aspirin");
         med1.setDosage("100mg");
@@ -200,6 +203,7 @@ public class PrescriptionTest {
     
     @Test(priority = 9)
     public void testPrescriptionExpiry() {
+        SoftAssert softAssert = new SoftAssert();
         prescription.setExpiryDate(LocalDate.now().minusDays(1));
         softAssert.assertTrue(prescription.isExpired(), "Prescription should be expired");
         softAssert.assertAll();
@@ -207,6 +211,7 @@ public class PrescriptionTest {
     
     @Test(priority = 10)
     public void testExpirePrescription() {
+        SoftAssert softAssert = new SoftAssert();
         prescription.expire();
         softAssert.assertEquals(prescription.getStatus(), Prescription.PrescriptionStatus.EXPIRED, "Status should be EXPIRED");
         softAssert.assertAll();
@@ -214,6 +219,7 @@ public class PrescriptionTest {
     
     @Test(priority = 11)
     public void testSetInstructions() {
+        SoftAssert softAssert = new SoftAssert();
         prescription.setInstructions("Take with food");
         softAssert.assertEquals(prescription.getInstructions(), "Take with food", "Instructions should be set correctly");
         softAssert.assertAll();
@@ -221,6 +227,7 @@ public class PrescriptionTest {
     
     @Test(priority = 12)
     public void testDefaultExpiryDate() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDate expectedExpiry = LocalDate.now().plusDays(30);
         softAssert.assertEquals(prescription.getExpiryDate(), expectedExpiry, "Default expiry date should be 30 days from now");
         softAssert.assertAll();

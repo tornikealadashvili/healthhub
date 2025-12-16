@@ -19,7 +19,6 @@ public class AppointmentTest {
     private Patient patient;
     private Doctor doctor;
     private Appointment appointment;
-    private SoftAssert softAssert;
     
     @BeforeSuite
     public void beforeSuite() {
@@ -79,15 +78,11 @@ public class AppointmentTest {
         appointment.setDoctor(doctor);
         appointment.setAppointmentDateTime(LocalDateTime.now().plusDays(1));
         appointment.setStatus(Appointment.AppointmentStatus.SCHEDULED);
-        softAssert = new SoftAssert();
         System.out.println("AppointmentTest - BeforeMethod executed. Method counter: " + methodCounter);
     }
     
     @AfterMethod
     public void afterMethod() {
-        if (softAssert != null) {
-            softAssert.assertAll();
-        }
         appointment = null;
         patient = null;
         doctor = null;
@@ -96,6 +91,7 @@ public class AppointmentTest {
     
     @Test(groups = "status", priority = 1)
     public void testAppointmentCreation() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(appointment, "Appointment should not be null");
         softAssert.assertEquals(appointment.getPatient(), patient, "Patient should match");
         softAssert.assertEquals(appointment.getDoctor(), doctor, "Doctor should match");
@@ -105,6 +101,7 @@ public class AppointmentTest {
     
     @Test(groups = "status", priority = 2)
     public void testAppointmentStatusEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(Appointment.AppointmentStatus.SCHEDULED.getDisplayName(), "Scheduled", "Scheduled display name should match");
         softAssert.assertEquals(Appointment.AppointmentStatus.COMPLETED.getDisplayName(), "Completed", "Completed display name should match");
         softAssert.assertEquals(Appointment.AppointmentStatus.CANCELLED.getDisplayName(), "Cancelled", "Cancelled display name should match");
@@ -114,6 +111,7 @@ public class AppointmentTest {
     
     @Test(groups = "status", priority = 3)
     public void testCancelAppointment() {
+        SoftAssert softAssert = new SoftAssert();
         appointment.cancel();
         softAssert.assertEquals(appointment.getStatus(), Appointment.AppointmentStatus.CANCELLED, "Status should be CANCELLED");
         softAssert.assertAll();
@@ -121,6 +119,7 @@ public class AppointmentTest {
     
     @Test(groups = "status", priority = 4)
     public void testCompleteAppointment() {
+        SoftAssert softAssert = new SoftAssert();
         appointment.complete();
         softAssert.assertEquals(appointment.getStatus(), Appointment.AppointmentStatus.COMPLETED, "Status should be COMPLETED");
         softAssert.assertAll();
@@ -128,6 +127,7 @@ public class AppointmentTest {
     
     @Test(groups = "status", priority = 5)
     public void testSetAppointmentStatus() {
+        SoftAssert softAssert = new SoftAssert();
         appointment.setStatus(Appointment.AppointmentStatus.CONFIRMED);
         softAssert.assertEquals(appointment.getStatus(), Appointment.AppointmentStatus.CONFIRMED, "Status should be CONFIRMED");
         softAssert.assertAll();
@@ -135,6 +135,7 @@ public class AppointmentTest {
     
     @Test(groups = "scheduler", priority = 6)
     public void testScheduleAppointment() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDateTime dateTime = LocalDateTime.now().plusDays(2);
         Appointment scheduled = Appointment.AppointmentScheduler.scheduleAppointment(patient, doctor, dateTime);
         
@@ -146,6 +147,7 @@ public class AppointmentTest {
     
     @Test(groups = "scheduler", priority = 7)
     public void testTimeSlotAvailability() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDateTime dateTime = LocalDateTime.now().plusDays(3);
         softAssert.assertTrue(Appointment.AppointmentScheduler.isTimeSlotAvailable(doctor, dateTime), "Time slot should be available initially");
         
@@ -156,6 +158,7 @@ public class AppointmentTest {
     
     @Test(groups = "scheduler", priority = 8)
     public void testGetAppointmentsForDoctor() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDateTime dateTime1 = LocalDateTime.now().plusDays(4);
         LocalDateTime dateTime2 = LocalDateTime.now().plusDays(5);
         
@@ -168,6 +171,7 @@ public class AppointmentTest {
     
     @Test(groups = "scheduler", priority = 9)
     public void testTimeSlotEnum() {
+        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(Appointment.AppointmentScheduler.TimeSlot.MORNING_9AM.getTime(), "09:00", "Morning 9AM time should match");
         softAssert.assertEquals(Appointment.AppointmentScheduler.TimeSlot.AFTERNOON_2PM.getPeriod(), "Afternoon", "Afternoon period should match");
         softAssert.assertNotNull(Appointment.AppointmentScheduler.TimeSlot.values(), "TimeSlot values should not be null");
@@ -176,6 +180,7 @@ public class AppointmentTest {
     
     @Test(priority = 10)
     public void testSetAppointmentReason() {
+        SoftAssert softAssert = new SoftAssert();
         appointment.setReason("Regular checkup");
         softAssert.assertEquals(appointment.getReason(), "Regular checkup", "Reason should be set correctly");
         softAssert.assertAll();
@@ -183,6 +188,7 @@ public class AppointmentTest {
     
     @Test(priority = 11)
     public void testSetAppointmentNotes() {
+        SoftAssert softAssert = new SoftAssert();
         appointment.setNotes("Patient requested follow-up");
         softAssert.assertEquals(appointment.getNotes(), "Patient requested follow-up", "Notes should be set correctly");
         softAssert.assertAll();
@@ -190,6 +196,7 @@ public class AppointmentTest {
     
     @Test(priority = 12)
     public void testGetAppointmentsForPatient() {
+        SoftAssert softAssert = new SoftAssert();
         LocalDateTime dateTime = LocalDateTime.now().plusDays(6);
         Appointment.AppointmentScheduler.scheduleAppointment(patient, doctor, dateTime);
         
